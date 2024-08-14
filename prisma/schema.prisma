@@ -18,3 +18,19 @@ model event {
   date        DateTime
   userId      String
 }
+model Feature {
+  id          String @id @default(cuid())
+  title       String
+  description String
+  votes       Vote[] @relation("FeatureVotes")
+}
+
+model Vote {
+  id        String  @id @default(cuid())
+  userId    String
+  featureId String
+  feature   Feature @relation(fields: [featureId], references: [id], name: "FeatureVotes")
+
+  @@unique([userId, featureId])
+  @@index([featureId])
+}
