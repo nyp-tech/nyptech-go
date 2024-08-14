@@ -1,5 +1,6 @@
 import { db } from "@/lib/db";
 import Link from "next/link";
+import PageEvents from "./event-list";
 
 export default async function Page() {
   const events = await db.event.findMany()
@@ -36,33 +37,10 @@ export default async function Page() {
           >
             Create Event
           </Link>
-          
+          <PageEvents events={events}/>
         </div>
-        <div className="carousel carousel-center bg-neutral rounded-box max-w-md space-x-4 p-4">
-
-  {events.map((events)=>(
-  <div className="carousel-item" key={events.id}>
-<div className="card bg-base-100 w-96 shadow-xl">
-  <figure>
-    <img
-      src={events.img}
-      alt="Shoes" />
-  </figure>
-  <div className="card-body">
-    <h2 className="card-title">{events.title}</h2>
-    <p>{events.location}</p>
-    <p>{events.description}</p>
-    
-    <div className="card-actions justify-end">
-    <div className="badge badge-outline">{events.club}</div>
-
-      <Link href={events.signup} className="btn btn-primary">Sign Up</Link>
-    </div>
-  </div>
-</div>
-</div>
-          ))}
-</div>
+        
+        
 
       </div>
     </main>

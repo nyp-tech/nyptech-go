@@ -1,6 +1,7 @@
 "use client"
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { UploadButton } from '@/lib/uploadthing';
 
 const CreateEvent = () => {
   const [title, setTitle] = useState('');
@@ -25,18 +26,32 @@ const CreateEvent = () => {
   };
 
   return (
-    <div>
-      <h1>Create Event</h1>
-      <form onSubmit={handleSubmit}>
-        <input type="text" placeholder="Title" value={title} onChange={(e) => setTitle(e.target.value)} required />
-        <input type="text" placeholder="Description" value={description} onChange={(e) => setDescription(e.target.value)} required />
-        <input type="text" placeholder="Signup Link" value={signup} onChange={(e) => setSignup(e.target.value)} required />
-        <input type="text" placeholder="Location" value={location} onChange={(e) => setLocation(e.target.value)} required />
-        <input type="text" placeholder="Club" value={club} onChange={(e) => setClub(e.target.value)} required />
+    <div className='card'>
+      <h1 className='card-title'>Create Event</h1>
+      <form onSubmit={handleSubmit} className='card-body'>
+        <input type="text" placeholder="Title" value={title} onChange={(e) => setTitle(e.target.value)} required className='input'/>
+        <input type="text" placeholder="Description" value={description} onChange={(e) => setDescription(e.target.value)} required className='textarea'/>
+        <input type="text" placeholder="Signup Link" value={signup} onChange={(e) => setSignup(e.target.value)} required className='input'/>
+        <input type="text" placeholder="Location" value={location} onChange={(e) => setLocation(e.target.value)} required className='input'/>
+        <input type="text" placeholder="Club" value={club} onChange={(e) => setClub(e.target.value)} required className='input'/>
 
-        <input type="text" placeholder="Image URL" value={img} onChange={(e) => setImg(e.target.value)} required />
+        {/* Remove the manual Image URL input field */}
+        {/* <input type="text" placeholder="Image URL" value={img} onChange={(e) => setImg(e.target.value)} required className='input'/> */}
+        
+        <UploadButton
+          endpoint="imageUploader"
+          onClientUploadComplete={(res) => {
+            if (res && res.length > 0) {
+              setImg(res[0].url);  // Set the image URL in the img state
+              alert("Upload Completed");
+            }
+          }}
+          onUploadError={(error: Error) => {
+            alert(`ERROR! ${error.message}`);
+          }}
+        />
 
-        <input type="date" placeholder="Time" value={date} onChange={(e) => setDate(e.target.value)} required />
+        <input type="date" placeholder="Time" value={date} onChange={(e) => setDate(e.target.value)} required className='input'/>
         <button type="submit" className='btn'>Create Event</button>
       </form>
     </div>
